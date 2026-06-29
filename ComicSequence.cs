@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ComicSequence : MonoBehaviour
+public class ComicSequence2 : MonoBehaviour
 {
     public UnityEngine.Sprite[] panels;           // comic images
     public float panelDuration = 2f;
@@ -16,11 +16,14 @@ public class ComicSequence : MonoBehaviour
     private float timer;
     private bool isComicActive = true;   // flag to control update
 
-    private const string ComicPlayedSuffix = "_ComicPlayed";
+    private const string ComicPlayedSuffix = "_ComicPlayed2";
 
     void Start()
     {
         img = GetComponent<UnityEngine.UI.Image>();
+        
+        Debug.Log($"ComicSequence2 Start: img is {(img == null ? "NULL" : "FOUND")}");
+        Debug.Log($"ComicSequence2 Start: panels.Length = {panels.Length}");
 
         string activeUser = PlayerPrefs.GetString("ActiveUser", "");
         string playedKey = string.IsNullOrEmpty(activeUser) ? "Guest" + ComicPlayedSuffix : activeUser + ComicPlayedSuffix;
@@ -42,7 +45,21 @@ public class ComicSequence : MonoBehaviour
         timer = panelDuration;
 
         if (panels.Length > 0)
-            img.sprite = panels[index];
+        {
+            if (img != null)
+            {
+                img.sprite = panels[index];
+                Debug.Log($"ComicSequence2: Set sprite to {panels[index].name}");
+            }
+            else
+            {
+                Debug.LogError("ComicSequence2: img is NULL! Cannot set sprite!");
+            }
+        }
+        else
+        {
+            Debug.LogError("ComicSequence2: panels array is empty!");
+        }
 
         // Show buttons
         UpdateButtonVisibility();
